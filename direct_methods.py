@@ -3,16 +3,22 @@ import numpy as np
 from common import solve_upper_triangular_matrix
 
 
-def gauss_simple(extended_matrix):
+def tridiagonal_matrix_algorithm(extended_matrix):
     assert len(extended_matrix) > 0
     assert len(extended_matrix) + 1 == len(extended_matrix[0])
-    np_matrix = np.array(extended_matrix, dtype=float)
-    for i, cur_row in enumerate(np_matrix):
-        pivot = cur_row[i]
-        if pivot != 0:
-            cur_row /= float(pivot)
 
-        for next_row in np_matrix[i+1:]:
-            next_row -= next_row[i] * cur_row
+    n = len(extended_matrix)
+    pq_matrix = np.zeros((n, n+1))
+    pq_matrix[0][1] = extended_matrix[0][1] / extended_matrix[0][0]
+    pq_matrix[0][n] = extended_matrix[0][n] / extended_matrix[0][0]
+    pq_matrix[0][0] = 1
 
-    return solve_upper_triangular_matrix(np_matrix)
+    for i, row in enumerate(extended_matrix):
+        if i + 1 < n:  # P[i]
+            pq_matrix[i][i + 1] = -row[i + 1] / (-row[i] + row[i - 1] * pq_matrix[i - 1][i])
+
+        # Q[i]
+        pq_matrix[i][n] = (row[i - 1] * pq_matrix[i - 1][n] - row[n]) / (-row[i] + row[i - 1] * pq_matrix[i - 1][i])
+        pq_matrix[i][i] = 1
+
+    return solve_upper_triangular_matrix(pq_matrix)
