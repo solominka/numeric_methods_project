@@ -3,7 +3,7 @@ import numpy as np
 from common import norm_x, norm_a, build_diagonal_dominance
 
 
-def simple_iteration(extended_matrix, eps):
+def zeidel_method(extended_matrix, eps):
     assert len(extended_matrix) > 0
     assert len(extended_matrix) + 1 == len(extended_matrix[0])
 
@@ -22,7 +22,9 @@ def simple_iteration(extended_matrix, eps):
         for i in range(n):
             x_cur[i] = matrix_copy[i][n]
             for j in range(n):
-                if j != i:
+                if j > i:
                     x_cur[i] -= matrix_copy[i][j] * x_prev[j]
+                elif j < i:
+                    x_cur[i] -= matrix_copy[i][j] * x_cur[j]
             x_cur[i] /= matrix_copy[i][i]
     return x_cur
