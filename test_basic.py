@@ -1,11 +1,20 @@
 import unittest
 
+from iterative_methods import simple_iteration
 from direct_methods import gauss_choice, gauss_elimination, tridiagonal_matrix_algorithm, LU_decomposition
 
-EPS = 0.01
+
+EPS = 0.001
 
 
 class TestCases(unittest.TestCase):
+    def test_simple_iteration(self):
+        matrix = [[10, 1, 1, 12], [2, 2, 10, 14], [2, 10, 1, 13]]
+        ans = simple_iteration(matrix, EPS)
+        assert abs(ans[0] - 1) < EPS
+        assert abs(ans[1] - 1) < EPS
+        assert abs(ans[2] - 1) < EPS
+
     def test_LU_decomposition(self):
         matrix = [[2, 1, 4, 16], [3, 2, 1, 10], [1, 3, 3, 16]]
         ans = LU_decomposition(matrix)
