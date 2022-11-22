@@ -55,7 +55,8 @@ def tridiagonal_matrix_algorithm(extended_matrix):
 def LU_decomposition(extended_matrix):
     assert len(extended_matrix) > 0
     assert len(extended_matrix) + 1 == len(extended_matrix[0])
-    
+
+    n = len(extended_matrix)
     lu_matrix = np.array(extended_matrix, dtype=float)
     for k in range(0, n):
         for i in range(k, n):
