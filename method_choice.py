@@ -1,6 +1,7 @@
 from direct_methods import gauss_simple, gauss_choice, gauss_elimination, tridiagonal_matrix_algorithm, LU_decomposition
 from iterative_methods import simple_iteration, zeidel_method
 
+
 def choose_best_method(A, eps=0.01):
     size_threshold = 10 ** 2
 
@@ -30,6 +31,7 @@ def _is_symmetric(matrix):
 
     return True
 
+
 def _diag_dominance(matrix):
     for i in range(len(matrix)):
         if matrix[i][i] < sum(matrix[i][:i]) + sum(matrix[i][i + 1:len(matrix)]):
@@ -44,6 +46,7 @@ def _zero_diag(matrix):
             return True
 
     return False
+
 
 def _little_values_diag(matrix, eps=0.1):
     for i in range(len(matrix)):
