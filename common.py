@@ -7,7 +7,6 @@ def solve_upper_triangular_matrix(extended_matrix):
             solution[i] -= extended_matrix[i][j] * solution[j]
     return solution
 
-
 def fill_by_rectangle_rule(extended_matrix, cur_iteration):
     n = len(extended_matrix)
     for i in range(cur_iteration+1, n):
