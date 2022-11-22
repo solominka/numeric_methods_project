@@ -3,7 +3,7 @@ import unittest
 from iterative_methods import simple_iteration, zeidel_method
 from direct_methods import gauss_simple, gauss_choice, gauss_elimination, tridiagonal_matrix_algorithm, LU_decomposition
 
-EPS = 0.001
+EPS = 0.01
 
 
 class TestCases(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestCases(unittest.TestCase):
         assert abs(ans[0] - 1.98) < EPS
         assert abs(ans[1] - 0.54) < EPS
         assert abs(ans[2] - 1.09) < EPS
-        
+
     def test_gauss_elimination(self):
         matrix = [[2, 1, 4, 16], [3, 2, 1, 10], [1, 3, 3, 16]]
         ans = gauss_elimination(matrix)
@@ -42,7 +42,7 @@ class TestCases(unittest.TestCase):
         assert abs(ans[1] - 1) < EPS
         assert abs(ans[2] - 1) < EPS
         assert abs(ans[3] - 1) < EPS
-        
+
     def test_zeidel_method(self):
         matrix = [[10, 1, 1, 12], [2, 2, 10, 14], [2, 10, 1, 13]]
         ans = zeidel_method(matrix, EPS)
