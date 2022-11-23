@@ -3,6 +3,9 @@ from iterative_methods import simple_iteration, zeidel_method
 
 
 def choose_best_method(A, eps=0.01):
+    assert len(A) > 0
+    assert len(A) + 1 == len(A[0])
+    
     size_threshold = 10 ** 2
 
     if len(A) < size_threshold and not _zero_diag(A):
