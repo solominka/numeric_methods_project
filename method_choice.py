@@ -4,7 +4,7 @@ from direct_methods import gauss_simple, gauss_choice, gauss_elimination, \
 from iterative_methods import simple_iteration, zeidel_method
 import numpy as np
 
-def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.01):
+def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.0001):
     assert len(extended_matrix) > 0
     assert len(extended_matrix) + 1 == len(extended_matrix[0])
     
@@ -40,9 +40,9 @@ def _is_symmetric(matrix, eps=0.001):
     return True
 
 
-def _zero_diag(matrix, eps=0.001):
+def _zero_diag(matrix, eps=0.0001):
     for i in range(len(matrix)):
-        if (matrix[i][i] - 0.0) < eps:
+        if matrix[i][i] < eps:
             return True
 
     return False
