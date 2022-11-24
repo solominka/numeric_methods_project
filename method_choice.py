@@ -1,51 +1,48 @@
-from direct_methods import gauss_simple, gauss_choice, gauss_elimination, tridiagonal_matrix_algorithm, LU_decomposition
+from common import build_diagonal_dominance
+from direct_methods import gauss_simple, gauss_choice, gauss_elimination, \
+        tridiagonal_matrix_algorithm, LU_decomposition
 from iterative_methods import simple_iteration, zeidel_method
+import numpy as np
 
-
-def choose_best_method(A, eps=0.01):
-    assert len(A) > 0
-    assert len(A) + 1 == len(A[0])
+def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.01):
+    assert len(extended_matrix) > 0
+    assert len(extended_matrix) + 1 == len(extended_matrix[0])
     
-    size_threshold = 10 ** 2
+    size_threshold = 100
 
-    if len(A) < size_threshold and not _zero_diag(A):
-        if _little_values_diag(A):
-            if _diag_dominance(A):
-                return tridiagonal_matrix_algorithm(A)
+    extended_matrix = np.array(extended_matrix, dtype=float)
 
-            return gauss_choice(A)
+    if len(extended_matrix) < size_threshold and not _zero_diag(extended_matrix, eps=checker_eps):
+        
+        if _little_values_diag(extended_matrix):
+            if build_diagonal_dominance(extended_matrix):
+                return tridiagonal_matrix_algorithm(extended_matrix)
 
-        if _diag_dominance(A):
-            return LU_decomposition(A)
+            return gauss_choice(extended_matrix)
 
-        return gauss_elimination(A)
+        if build_diagonal_dominance(extended_matrix):
+            return LU_decomposition(extended_matrix)
 
-    if _is_symmetric(A):
-        return zeidel_method(A, eps=eps)
+        return gauss_elimination(extended_matrix)
 
-    return simple_iteration(A, eps=eps)
+    if _is_symmetric(extended_matrix, eps=checker_eps):
+        return zeidel_method(extended_matrix, eps=method_eps)
+
+    return simple_iteration(extended_matrix, eps=method_eps)
 
 
-def _is_symmetric(matrix):
+def _is_symmetric(matrix, eps=0.001):
     for i in range(len(matrix)):
         for j in range(len(matrix)):
-            if matrix[i][j] != matrix[j][i]:
+            if abs(matrix[i][j] - matrix[j][i]) < eps:
                 return False
 
     return True
 
 
-def _diag_dominance(matrix):
+def _zero_diag(matrix, eps=0.001):
     for i in range(len(matrix)):
-        if matrix[i][i] < sum(matrix[i][:i]) + sum(matrix[i][i + 1:len(matrix)]):
-            return False
-
-    return True
-
-
-def _zero_diag(matrix):
-    for i in range(len(matrix)):
-        if matrix[i][i] == 0:
+        if (matrix[i][i] - 0.0) < eps:
             return True
 
     return False
