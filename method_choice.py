@@ -4,7 +4,7 @@ from direct_methods import gauss_simple, gauss_choice, gauss_elimination, \
 from iterative_methods import simple_iteration, zeidel_method
 import numpy as np
 
-def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.0001):
+def choose_best_method(extended_matrix, method_eps=0.01):
     assert len(extended_matrix) > 0
     assert len(extended_matrix) + 1 == len(extended_matrix[0])
     
@@ -12,7 +12,7 @@ def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.0001):
 
     extended_matrix = np.array(extended_matrix, dtype=float)
 
-    if len(extended_matrix) < size_threshold and not _zero_diag(extended_matrix, eps=checker_eps):
+    if len(extended_matrix) < size_threshold and not _zero_diag(extended_matrix):
         
         if _little_values_diag(extended_matrix):
             if build_diagonal_dominance(extended_matrix):
@@ -25,13 +25,13 @@ def choose_best_method(extended_matrix, method_eps=0.01, checker_eps=0.0001):
 
         return gauss_elimination(extended_matrix)
 
-    if _is_symmetric(extended_matrix, eps=checker_eps):
+    if _is_symmetric(extended_matrix):
         return zeidel_method(extended_matrix, eps=method_eps)
 
     return simple_iteration(extended_matrix, eps=method_eps)
 
 
-def _is_symmetric(matrix, eps=0.001):
+def _is_symmetric(matrix, eps=10e-9):
     for i in range(len(matrix)):
         for j in range(len(matrix)):
             if abs(matrix[i][j] - matrix[j][i]) < eps:
@@ -40,7 +40,7 @@ def _is_symmetric(matrix, eps=0.001):
     return True
 
 
-def _zero_diag(matrix, eps=0.0001):
+def _zero_diag(matrix, eps=10e-9):
     for i in range(len(matrix)):
         if abs(matrix[i][i]) < eps:
             return True
