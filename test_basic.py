@@ -2,6 +2,7 @@ import unittest
 
 from iterative_methods import simple_iteration, zeidel_method
 from direct_methods import gauss_simple, gauss_choice, gauss_elimination, tridiagonal_matrix_algorithm, LU_decomposition
+from method_choice import choose_best_method
 
 EPS = 0.01
 
@@ -57,6 +58,12 @@ class TestCases(unittest.TestCase):
         assert abs(ans[1] - 1) < EPS
         assert abs(ans[2] - 1) < EPS
 
+    def test_method_choice(self):
+        matrix = [[10, 1, 1, 12], [2, 2, 10, 14], [2, 10, 1, 13]]
+        ans = choose_best_method(matrix)
+        assert abs(ans[0] - 1) < EPS
+        assert abs(ans[1] - 1) < EPS
+        assert abs(ans[2] - 1) < EPS
 
 if __name__ == '__main__':
     unittest.main()
