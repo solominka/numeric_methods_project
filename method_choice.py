@@ -42,7 +42,7 @@ def _is_symmetric(matrix, eps=0.001):
 
 def _zero_diag(matrix, eps=0.0001):
     for i in range(len(matrix)):
-        if matrix[i][i] < eps:
+        if abs(matrix[i][i]) < eps:
             return True
 
     return False
@@ -50,7 +50,7 @@ def _zero_diag(matrix, eps=0.0001):
 
 def _little_values_diag(matrix, eps=0.1):
     for i in range(len(matrix)):
-        if matrix[i][i] < eps:
+        if abs(matrix[i][i]) < eps:
             return True
 
     return False
